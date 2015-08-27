@@ -209,7 +209,7 @@ While we avoid it wherever possible, Munit Helpers does have to use a few undocu
 Get Involved
 ====================
 
-If you've found a bug or have a feature request, [file an issue on Github](https://github.com/tulip/tulip/munit-helpers).
+If you've found a bug or have a feature request, [file an issue on Github](https://github.com/tulip/munit-helpers).
 
 You also join the [mailing list](https://groups.google.com/forum/#!forum/munit-helpers) if you're interested in getting involved with development.
 
@@ -231,7 +231,7 @@ Pull requests must also follow the conventions below and pass jshint using the `
 Coding Conventions
 --------------------
 
-* [Compact Control Readability Style](http://en.wikipedia.org/wiki/Indent_style#Compact_control_readability_style)
+* [Stroustrup Indentation Style](https://en.wikipedia.org/wiki/Indent_style#Variant:_Stroustrup)
 * Four spaces, no tabs
 * Trailing newline in all files
 * Everything in our [jshintrc](.jshintrc)
@@ -239,4 +239,4 @@ Coding Conventions
 License
 ====================
 
-Munit Helpers is licensed under the [Apache Public License](LICENSE.md).
+Munit Helpers is licensed under the [Apache Public License](LICENSE).
