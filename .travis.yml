@@ -5,10 +5,7 @@ node_js:
   - "0.10"
 
 install:
-  - "npm install -g jshint || :"
-  - "npm install -g jshint"
   - "curl https://install.meteor.com | /bin/sh"
 
 script:
   - "node ./build/start_test.js"
-  - "jshint ./"
