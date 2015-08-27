@@ -40,7 +40,7 @@ meteor.stdout.on('data', function startTesting(data) {
 
 function runTestSuite() {
   process.env.URL = "http://localhost:10015/"
-  var phantomjs = spawn('phantomjs', ['./phantom_runner.js']);
+  var phantomjs = spawn('phantomjs', ['./build/phantom_runner.js']);
   phantomjs.stdout.pipe(process.stdout);
   phantomjs.stderr.pipe(process.stderr);
 

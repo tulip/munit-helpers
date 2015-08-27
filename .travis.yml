@@ -4,10 +4,10 @@ node_js:
   - "0.8"
   - "0.10"
 
-before_script:
-  - "npm install -g jshint"
+install:
+  - "npm install -g jshint || :"
   - "curl -L http://git.io/ejPSng | /bin/sh"
 
 script:
-  - "node start_test.js"
+  - "node build/start_test.js"
   - "jshint ./"
