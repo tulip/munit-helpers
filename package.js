@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 Package.describe({
-    summary: "Helpers for writing unit tests with ",
+    summary: "Helpers for writing unit tests with Munit",
     version: "0.1.0",
     name: "tulip:munit-helpers",
-    git: "TODO"
+    git: "https://github.com/tulip/munit-helpers.git"
 });
 
 Package.onUse(function (api) {
@@ -39,11 +39,11 @@ Package.onUse(function (api) {
         "underscore",
         "less",
 
-        "practicalmeteor:munit"
+        "practicalmeteor:munit@2.1.5"
     ]);
 
     api.use([
-        "iron:layout"
+        "iron:layout@1.0.8"
     ], {weak: true});
 
     api.imply("practicalmeteor:munit");
@@ -93,7 +93,7 @@ Package.onTest(function(api) {
         "underscore",
 
         "tulip:munit-helpers",
-        "iron:router"
+        "iron:router@1.0.8"
     ]);
 
     api.addFiles([

@@ -58,11 +58,11 @@ Sets `object[property]` to `value` and returns a function that restores the stub
 
 This method is "nestable" -- if the property is already stubbed, that stub will be replaced with this one. When the new stub is restored, the old one will be put back in place, unless it's restored with `restoreAll`, which restores all stubs, even nested ones. Trying to restore the old stub before the new one is restored will cause an error.
 
-#### `MunitHelpers.StubProperties.restore(object:Object, property:String, value:Any)`
+##### `MunitHelpers.StubProperties.restore(object:Object, property:String, value:Any)`
 
 Restores the stub of `property` on `object` if it exists. Does nothing if that property is not stubbed.
 
-#### `MunitHelpers.StubProperties.isStub(object:Object, property:String) -> Boolean`
+##### `MunitHelpers.StubProperties.isStub(object:Object, property:String) -> Boolean`
 
 Returns whether the given property is stubbed.
 
