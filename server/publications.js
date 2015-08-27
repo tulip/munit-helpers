@@ -51,7 +51,7 @@ limitations under the License.
             var sub = conns.clientConn.subscribe.apply(conns.clientConn, subArgs);
 
             return {
-                ready: sub.ready.bind(sub),
+                ready: _.bind(sub.ready, sub),
 
                 stop: function() {
                     // stop the subscrption even though we later disconnect, so

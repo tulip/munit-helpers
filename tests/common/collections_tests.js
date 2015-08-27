@@ -20,7 +20,7 @@ limitations under the License.
     var expect = chai.expect;
 
     var collection = new Mongo.Collection("MunitHelpersTestCollection");
-    var collectionRealFind = collection._collection.find.bind(collection._collection);
+    var collectionRealFind = _.bind(collection._collection.find, collection._collection);
 
     var collection2 = new Mongo.Collection("MunitHelpersTestCollectionTwo");
 

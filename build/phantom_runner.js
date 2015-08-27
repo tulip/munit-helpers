@@ -7,6 +7,9 @@ console.log("Running Meteor tests in PhantomJS... " + system.env.URL);
 page.onConsoleMessage = function (message) {
   console.log(message);
 };
+page.onError = function(err){
+    console.error("ERR: " + err);
+}
 page.open(system.env.URL + platform);
 setInterval(function () {
   var done = page.evaluate(function () {
