@@ -6,7 +6,6 @@ node_js:
 
 install:
   - "npm install -g jshint || :"
-  - "curl -L http://git.io/ejPSng | /bin/sh"
 
 script:
   - "node build/start_test.js"

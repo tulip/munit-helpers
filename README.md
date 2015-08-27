@@ -1,6 +1,10 @@
 Munit Helpers
 ====================
 
+[![Build Status](https://travis-ci.org/tulip/munit-helpers.svg?branch=master)](https://travis-ci.org/tulip/munit-helpers)
+
+[![Code Climate](https://codeclimate.com/github/tulip/munit-helpers/badges/gpa.svg)](https://codeclimate.com/github/tulip/munit-helpers)
+
 Munit Helpers is a suite of Meteor package-testing tools, integrated with the excellent [Munit](https://github.com/practicalmeteor/meteor-munit) unit testing framework.
 
 Munit Helpers includes:
