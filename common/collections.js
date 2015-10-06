@@ -23,7 +23,8 @@ limitations under the License.
         "insert",
         "update",
         "upsert",
-        "remove"
+        "remove",
+        "_ensureIndex",
     ];
 
     // id -> restore function
@@ -40,6 +41,13 @@ limitations under the License.
 
             // create a minimongo collection to act as the stub
             var stubCollection = new LocalCollection();
+            // This method is not available on LocalCollection, so we have to add a
+            // function to be the stub.
+            stubCollection._ensureIndex = function() {
+                if(Meteor.isClient) {
+                    throw new Error("Cannot call _ensureIndex on the client.");
+                }
+            };
             stubCollection.name = collection._name;
 
             // import records from the real collection into the minimongo

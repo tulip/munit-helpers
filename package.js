@@ -16,7 +16,7 @@ limitations under the License.
 
 Package.describe({
     summary: "Helpers for writing unit tests with Munit",
-    version: "0.1.0",
+    version: "0.1.1",
     name: "tulip:munit-helpers",
     git: "https://github.com/tulip/munit-helpers.git"
 });
