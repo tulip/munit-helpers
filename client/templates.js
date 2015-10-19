@@ -24,10 +24,19 @@ limitations under the License.
 
     MunitHelpers.Templates = {
         render: function(template, data) {
-            var div = $("<div />");
+            // stub Meteor._debug so we can assert that no errors were thrown.
+            spies.create("munitHelpersMeteorDebug", Meteor, "_debug");
 
+            // render to a detached div
+            var div = $("<div />");
             var view = Blaze.renderWithData(template, data, div[0]);
             Tracker.flush();
+
+            // assert no errors were thrown
+            if(spies.munitHelpersMeteorDebug.callCount > 0) {
+                Blaze.remove(view);
+                throw new Error(template.viewName + " threw an error: " + spies.munitHelpersMeteorDebug.args[0].join(" "));
+            }
 
             // store the view
             var viewId = MunitHelpersInternals.randomId();
@@ -47,6 +56,9 @@ limitations under the License.
 
             var Iron = Package["iron:core"].Iron;
 
+            // stub Meteor._debug so we can assert that no errors were thrown.
+            spies.create("munitHelpersMeteorDebug", Meteor, "_debug");
+
             var div = $("<div />");
 
             var layout = new Iron.Layout({template: layoutTemplate, data: data});
@@ -54,8 +66,15 @@ limitations under the License.
             layout.insert({el: div});
             Tracker.flush();
 
-            // store the view
             var view = Blaze.getView(div.children()[0]);
+
+            // assert no errors were thrown
+            if(spies.munitHelpersMeteorDebug.callCount > 0) {
+                Blaze.remove(view);
+                throw new Error("Layout " + layoutTemplate.name + " threw an error: " + spies.munitHelpersMeteorDebug.args[0].join(" "));
+            }
+
+            // store the view
             var viewId = MunitHelpersInternals.randomId();
             views[viewId] = view;
 

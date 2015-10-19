@@ -20,7 +20,7 @@ limitations under the License.
     var expect = chai.expect;
 
 
-    // create some simple behavior for the test template
+    // create some simple behavior for the test templates
     Template.munitHelpersTestTemplate.created = function() {
         this.bar = new ReactiveVar(0);
     };
@@ -34,6 +34,12 @@ limitations under the License.
     Template.munitHelpersTestTemplate.events({
         "click .b": function(evt, tmpl) {
             tmpl.bar.set(tmpl.bar.get() + 1);
+        }
+    });
+
+    Template.munitHelpersTestTemplateWithError.helpers({
+        throwAnError: function() {
+            throw new Error("Test Error");
         }
     });
 
@@ -120,6 +126,12 @@ limitations under the License.
             MunitHelpers.Templates.restoreAll();
             expect(templateIsAlive($1)).to.be.false;
             expect(templateIsAlive($2)).to.be.false;
+        },
+
+        testTemplateThrowingError: function() {
+            expect(function() {
+                MunitHelpers.Templates.render(Template.munitHelpersTestTemplateWithError);
+            }).to.throw("Template.munitHelpersTestTemplateWithError threw an error");
         }
     });
 })();

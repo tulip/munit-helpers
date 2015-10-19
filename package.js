@@ -16,7 +16,7 @@ limitations under the License.
 
 Package.describe({
     summary: "Helpers for writing unit tests with Munit",
-    version: "0.1.0",
+    version: "0.2.0",
     name: "tulip:munit-helpers",
     git: "https://github.com/tulip/munit-helpers.git"
 });
@@ -24,7 +24,7 @@ Package.describe({
 Package.onUse(function (api) {
     "use strict";
 
-    api.versionsFrom("1.0.3.1");
+    api.versionsFrom("1.2.0.2");
 
     api.use([
         "blaze",
@@ -36,8 +36,8 @@ Package.onUse(function (api) {
         "random",
         "templating",
         "test-helpers",
+        "tracker",
         "underscore",
-        "less",
 
         "practicalmeteor:munit@2.1.5"
     ]);
@@ -86,10 +86,12 @@ Package.onTest(function(api) {
 
     api.use([
         "accounts-base",
+        "check",
         "mongo",
         "random",
         "reactive-var",
         "templating",
+        "tracker",
         "underscore",
 
         "tulip:munit-helpers",
