@@ -87,16 +87,38 @@ limitations under the License.
                 _id: id
             });
 
+            // make sure the original collection wasn't touched
+            expect(collectionRealFind().fetch()).to.deep.equal([]);
+        },
+
+        // _collection and _ensureIndex should only be stubbed on the server
+        // for real Mongo.Collections
+        testStubMethodsThatDontExistForMinimongo: function() {
+            var minimongoCollection = new LocalCollection();
+
+            // stub the collection
+            MunitHelpers.Collections.stub(minimongoCollection);
+
+            // _collection
+            expect(minimongoCollection).to.not.have.key("_collection");
+
+            // _ensureIndex
+            expect(minimongoCollection).to.not.have.key("_ensureIndex");
+        },
+
+        serverTestStubMethodsThatOnlyExistOnRealCollections: function() {
+            MunitHelpers.Collections.stub(collection);
+            var id = collection.insert({a: 10});
+
             // _collection
             expect(collection._collection.find({_id: id}).fetch()).to.deep.equal([{
-                foo: "bar",
-                b: 20,
-                c: 30,
+                a: 10,
                 _id: id
             }]);
 
-            // make sure the original collection wasn't touched
-            expect(collectionRealFind().fetch()).to.deep.equal([]);
+            // _ensureIndex
+            expect(collection._ensureIndex).to.be.a("function");
+            expect(collection._ensureIndex).to.not.throw;
         },
 
         testStubImport: function() {

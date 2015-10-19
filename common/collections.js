@@ -58,11 +58,18 @@ limitations under the License.
                 return MunitHelpers.StubProperties.stub(collection, method, stubMethod);
             });
 
-            // Also stub the _collection property that should point
-            // to the underlying mongo collection on the server
-            stubRestoreFns.push(
-                MunitHelpers.StubProperties.stub(collection, "_collection", stubCollection)
-            );
+            // If this was a server collection, also stub _ensureIndex and _collection
+            if(_.isFunction(collection, "_ensureIndex")) {
+                stubRestoreFns.push(
+                    MunitHelpers.StubProperties.stub(collection, "_ensureIndex", function() { /* no-op */ })
+                );
+            }
+
+            if(collection._collection) {
+                stubRestoreFns.push(
+                    MunitHelpers.StubProperties.stub(collection, "_collection", stubCollection)
+                );
+            }
 
             // assign this stub an ID. Tag the collection with the ID
             var id = MunitHelpersInternals.randomId();

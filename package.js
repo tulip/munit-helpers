@@ -87,6 +87,7 @@ Package.onTest(function(api) {
     api.use([
         "accounts-base",
         "check",
+        "minimongo",
         "mongo",
         "random",
         "reactive-var",
