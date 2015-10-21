@@ -101,7 +101,7 @@ Restores the given collection. Throws an error if the collection is not stubbed.
 
 Restores all collections stubbed by `MunitHelpers.Collections.stub`.
 
-Methods (Anywhere Only)
+Methods (Anywhere)
 --------------------
 
 ##### `MunitHelpers.Methods.apply(method:String, args:Array, user:Optional Object)`
