@@ -37,6 +37,8 @@
     "Spacebars": false,
     "ReactiveVar": false,
     "sinon": false,
-    "Lolex": false
+    "Lolex": false,
+    "DDP": false,
+    "DDPCommon": false
   }
 }

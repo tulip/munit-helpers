@@ -37,7 +37,7 @@ limitations under the License.
     };
 
     Munit.run({
-        name: "Munit Helpers Collections Tests",
+        name: "munit-helpers - Common - Collections",
 
         setup: setup,
         tearDown: setup,

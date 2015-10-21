@@ -57,7 +57,7 @@ limitations under the License.
 
 
     Munit.run({
-        name: "Munit Helpers Templates Test",
+        name: "munit-helpers - Client - Templates",
 
         tearDown: MunitHelpers.restoreAll,
 

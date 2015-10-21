@@ -46,6 +46,10 @@ limitations under the License.
             stubs.create("munitHelpersMeteorUser", Meteor, "user").returns(userRecord);
             stubs.create("munitHelpersMeteorUserId", Meteor, "userId").returns(id);
 
+            // stub Meteor.connection._userId
+            var restoreConnectionUserIdStub = MunitHelpers.StubProperties.stub(Meteor.connection, "_userId", id);
+            Meteor.connection._userIdDeps.changed();
+
             return function() {
                 // restore Meteor.user
                 if(oldUserStub) {
@@ -70,6 +74,10 @@ limitations under the License.
                 if(restoreUserStub) {
                     restoreUserStub();
                 }
+
+                // restore Meteor.connection._userId
+                restoreConnectionUserIdStub();
+                Meteor.connection._userIdDeps.changed();
             };
         }
     });

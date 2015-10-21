@@ -21,7 +21,7 @@ limitations under the License.
     var expect = chai.expect;
 
     Munit.run({
-        name: "Munit Helpers Publication Tests",
+        name: "munit-helpers - Server - Publications",
 
         tearDown: MunitHelpers.restoreAll,
 

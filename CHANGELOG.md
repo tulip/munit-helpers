@@ -1,3 +1,11 @@
+# 0.2.1
+
+* MunitHelpers.Methods.apply now works on both client and server
+
+* Fix behavior of MunitHelpers.Auth.stubLogin to correctly stub `this.userId`
+  inside client-side method stubs
+
+
 # 0.2
 
 * Support for Meteor 1.2.

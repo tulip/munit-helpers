@@ -21,7 +21,7 @@ limitations under the License.
     var expect = chai.expect;
 
     Munit.run({
-        name: "Munit Helpers StubProperties Tests",
+        name: "munit-helpers - Common - StubProperties",
 
         tearDown: MunitHelpers.restoreAll,
 

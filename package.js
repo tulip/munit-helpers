@@ -16,7 +16,7 @@ limitations under the License.
 
 Package.describe({
     summary: "Helpers for writing unit tests with Munit",
-    version: "0.2.0",
+    version: "0.2.1",
     name: "tulip:munit-helpers",
     git: "https://github.com/tulip/munit-helpers.git"
 });
@@ -29,6 +29,8 @@ Package.onUse(function (api) {
     api.use([
         "blaze",
         "check",
+        "ddp",
+        "ddp-common",
         "htmljs",
         "jquery",
         "minimongo",
@@ -65,6 +67,7 @@ Package.onUse(function (api) {
     // client-only files
     api.addFiles([
         "client/auth.js",
+        "client/methods.js",
         "client/templates.js",
         "lib/chai-jquery.js"
     ], "client");
@@ -102,6 +105,7 @@ Package.onTest(function(api) {
     api.addFiles([
         "tests/common/auth_tests.js",
         "tests/common/collections_tests.js",
+        "tests/common/methods_tests.js",
         "tests/common/stub_date_tests.js",
         "tests/common/stub_properties_tests.js"
     ]);
@@ -115,7 +119,6 @@ Package.onTest(function(api) {
     api.addFiles([
         "tests/server/acl_tests.js",
         "tests/server/connection_tests.js",
-        "tests/server/methods_tests.js",
         "tests/server/publications_tests.js"
     ], "server");
 

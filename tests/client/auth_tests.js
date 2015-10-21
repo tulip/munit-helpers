@@ -19,8 +19,27 @@ limitations under the License.
 
     var expect = chai.expect;
 
+
+    // runs the client-side method stub that returns the current user's ID
+    // returns the result
+    var runTestMethod = function() {
+        return MunitHelpers.Methods.apply("munitHelpersClientAuthTestMethod", []);
+    };
+
     Munit.run({
-        name: "Munit Helpers Client-Side Auth Tests",
+        name: "munit-helpers - Client - Auth",
+
+        suiteSetup: function() {
+            // we define a client-side method stub so later we can test that
+            // client-side stubs are getting the right user id
+
+            delete Meteor.connection._methodHandlers.munitHelpersClientAuthTestMethod;
+            Meteor.methods({
+                munitHelpersClientAuthTestMethod: function() {
+                    return this.userId;
+                }
+            });
+        },
 
         tearDown: MunitHelpers.restoreAll,
 
@@ -39,6 +58,7 @@ limitations under the License.
             expect(Meteor.users.findOne(userRecord._id)).to.deep.equal(userRecord);
             expect(Meteor.user()).to.deep.equal(userRecord);
             expect(Meteor.userId()).to.equal(userRecord._id);
+            expect(runTestMethod()).to.equal(userRecord._id);
         },
 
         testStubLoginWithExplicitId: function() {
@@ -57,6 +77,7 @@ limitations under the License.
             expect(Meteor.users.findOne(userRecord._id)).to.deep.equal(userRecord);
             expect(Meteor.user()).to.deep.equal(userRecord);
             expect(Meteor.userId()).to.equal(userRecord._id);
+            expect(runTestMethod()).to.equal(userRecord._id);
         },
 
         testStubLoginRestore: function() {
@@ -75,6 +96,7 @@ limitations under the License.
             expect(Meteor.users.findOne(userRecord._id)).to.be.undefined;
             expect(Meteor.user()).to.be.null;
             expect(Meteor.userId()).to.be.null;
+            expect(runTestMethod()).to.be.null;
         },
 
         testStubLoginRestoreAll: function() {
@@ -93,6 +115,7 @@ limitations under the License.
             expect(Meteor.users.findOne(userRecord._id)).to.be.undefined;
             expect(Meteor.user()).to.be.null;
             expect(Meteor.userId()).to.be.null;
+            expect(runTestMethod()).to.be.null;
         },
 
         testStubLoginNestedRestore: function() {
@@ -115,6 +138,7 @@ limitations under the License.
             expect(Meteor.users.findOne(userRecord2._id)).to.deep.equal(userRecord2);
             expect(Meteor.user()).to.deep.equal(userRecord2);
             expect(Meteor.userId()).to.equal(userRecord2._id);
+            expect(runTestMethod()).to.equal(userRecord2._id);
 
             // restore once
             restore2();
@@ -125,6 +149,7 @@ limitations under the License.
             expect(Meteor.users.findOne(userRecord1._id)).to.deep.equal(userRecord1);
             expect(Meteor.user()).to.deep.equal(userRecord1);
             expect(Meteor.userId()).to.equal(userRecord1._id);
+            expect(runTestMethod()).to.equal(userRecord1._id);
 
             // restore again
             restore1();
@@ -134,6 +159,7 @@ limitations under the License.
             expect(Meteor.users.findOne(userRecord1._id)).to.be.undefined;
             expect(Meteor.user()).to.be.null;
             expect(Meteor.userId()).to.be.null;
+            expect(runTestMethod()).to.be.null;
         }
     });
 })();

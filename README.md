@@ -101,6 +101,17 @@ Restores the given collection. Throws an error if the collection is not stubbed.
 
 Restores all collections stubbed by `MunitHelpers.Collections.stub`.
 
+Methods (Anywhere Only)
+--------------------
+
+##### `MunitHelpers.Methods.apply(method:String, args:Array, user:Optional Object)`
+
+Runs the given method with the given arguments. Stubs a log-in of the given user if provided. Returns the return value of the method, or throws an error if the method throws an error.
+
+On the client, this uses the client-side stub of the method. It does not actually call to the server. On the server, this uses the server-side version of the method. In both cases, it runs syncronously, returning a value instead of taking a callback.
+
+WARNING: On the server, this internally uses `MunitHelpers.Connection.create`, which means it won't work with sinon's fake timers. It does work with `MunitHelpers.StubDate.stub`.
+
 Auth (Varies)
 --------------------
 
@@ -176,15 +187,6 @@ Stubs a log-in of the given user and marks that user as logged in to the given c
 ##### `MunitHelpers.Connection.restoreAll()`
 
 Closes down all connections created by `MunitHelpers.Connection.create`. This is also done by `MunitHelpers.restoreAll()`.
-
-Methods (Server Only)
---------------------
-
-##### `MunitHelpers.Methods.apply(method:String, args:Array, user:Optional Object)`
-
-Runs the given method with the given arguments. Stubs a log-in of the given user if provided. Returns the return value of the method, or throws an error if the method throws an error.
-
-WARNING: This internally uses `MunitHelpers.Connection.create`, which means it won't work with sinon's fake timers. It does work with `MunitHelpers.StubDate.stub`.
 
 Publications (Server Only)
 --------------------

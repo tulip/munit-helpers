@@ -20,7 +20,7 @@ limitations under the License.
     var expect = chai.expect;
 
     Munit.run({
-        name: "Munit Helpers Stub Date",
+        name: "munit-helpers - Common - StubDate",
 
         tearDown: MunitHelpers.restoreAll,
 

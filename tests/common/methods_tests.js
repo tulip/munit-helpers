@@ -21,12 +21,17 @@ limitations under the License.
     var expect = chai.expect;
 
     Munit.run({
-        name: "Munit Helpers Methods Tests",
+        name: "munit-helpers - Common - Methods",
 
         tearDown: MunitHelpers.restoreAll,
 
         suiteSetup: function() {
-            delete Meteor.server.method_handlers.munitHelpersMethodsTestMethod;
+            if(Meteor.isClient) {
+                delete Meteor.connection._methodHandlers.munitHelpersMethodsTestMethod;
+            }
+            else {
+                delete Meteor.server.method_handlers.munitHelpersMethodsTestMethod;
+            }
 
             Meteor.methods({
                 munitHelpersMethodsTestMethod: function(arg) {
@@ -34,10 +39,14 @@ limitations under the License.
                         ping: String
                     });
 
-                    return {
-                        pong: arg.ping,
-                        user: Meteor.users.findOne(this.userId)
-                    };
+                    var response = { pong: arg.ping };
+
+                    var user = Meteor.users.findOne(this.userId);
+                    if(user) {
+                        response.user = user;
+                    }
+
+                    return response;
                 }
             });
         },

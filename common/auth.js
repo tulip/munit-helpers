@@ -33,6 +33,7 @@ limitations under the License.
                 // first, remove the user, in case the stub was a no-op
                 Meteor.users.remove(_id);
 
+                // call the restoration function for the collection
                 restoreCollectionStub();
             };
         }

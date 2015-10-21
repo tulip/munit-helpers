@@ -21,7 +21,7 @@ limitations under the License.
     var expect = chai.expect;
 
     Munit.run({
-        name: "Munit Helpers Connection Tests",
+        name: "munit-helpers - Server - Connection",
 
         tearDown: MunitHelpers.restoreAll,
 
