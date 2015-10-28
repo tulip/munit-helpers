@@ -112,6 +112,56 @@ On the client, this uses the client-side stub of the method. It does not actuall
 
 WARNING: On the server, this internally uses `MunitHelpers.Connection.create`, which means it won't work with sinon's fake timers. It does work with `MunitHelpers.StubDate.stub`.
 
+DeepMatch (Anywhere)
+--------------------
+
+##### `MunitHelpers.DeepMatch.diff(actual:Any, expected:Any)`
+
+Deep-diffs `actual` and `expected`. Returns `undefined` if there are no
+differences. Uses [deep-diff](https://github.com/flitbit/diff)
+internally, with modifications to also provide human-readable difference
+descriptions and support custom matching functions.
+
+If there are differences, returns an array of differences. See the
+[deep-diff documentation](https://github.com/flitbit/diff#simple-examples)
+for details.
+
+As an extension to the upstream library, each item of the array additionally
+has a `desc` property with a human-readable description of the difference.
+
+As an additional extension, the expected object may contain functions. A
+field in `actual` is matched against a function in `expected` by calling that
+function with the `actual` field as an argument, and checking whether the
+function returns a truthy value. As an example, we could use `DeepMatch` to
+check whether a particular field is a number greater than 10 with:
+
+```javascript
+    MunitHelpers.DeepMatch.expectEqual(actualObject, {
+        someField: function(value) {
+            return _.isNumber(value) && (value > 10);
+        }
+    });
+```
+
+and then `{ someField: 15 }` would return no differences, but `{ someField: 5 }`
+would return the difference description:
+
+```javascript
+[
+    {
+        kind: "M",
+        path: [ "someField" ],
+        lhs: 5,
+        desc: "Function matcher didn't match at someField"
+    }
+]
+```
+
+This function is also exposed as the `deepMatch` helper in chai, so you can
+use `expect(actualObject).to.deepMatch(expectedObject)` in your tests. This
+is a drop-in replacement for `expect(actualObject).to.deep.equal(expecteObject)`
+that gives much better error messages.
+
 Auth (Varies)
 --------------------
 

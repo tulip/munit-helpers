@@ -126,8 +126,13 @@ limitations under the License.
             collection.insert({_id: "a", a: 1});
             collection.insert({_id: "b", b: 2});
 
-            // stub it and make sure we've imported
-            MunitHelpers.Collections.stub(collection);
+            // we don't import from real collections by default
+            var resetStub = MunitHelpers.Collections.stub(collection);
+            expect(collection.find().fetch()).to.deep.equal([]);
+
+            // but we can
+            resetStub();
+            MunitHelpers.Collections.stub(collection, false);
             expect(collection.find().fetch()).to.deep.have.members([
                 {_id: "a", a: 1},
                 {_id: "b", b: 2}
@@ -165,7 +170,6 @@ limitations under the License.
             var restore = MunitHelpers.Collections.stub(collection);
             collection.insert({_id: "b", b: 2});
             expect(collection.find().fetch()).to.deep.have.members([
-                {_id: "a", a: 1},
                 {_id: "b", b: 2}
             ]);
 
@@ -216,7 +220,6 @@ limitations under the License.
             MunitHelpers.Collections.stub(collection);
             collection.insert({_id: "b", b: 2});
             expect(collection.find().fetch()).to.deep.have.members([
-                {_id: "a", a: 1},
                 {_id: "b", b: 2}
             ]);
 
@@ -280,6 +283,14 @@ limitations under the License.
             // restore again and make sure we're back to normal
             restore1();
             expect(collection.find().count()).to.equal(0);
+        },
+
+        testDoesNotImportFromRealCollection: function() {
+            collection.insert({});
+
+            MunitHelpers.Collections.stub(collection);
+
+            expect(collection.find().fetch().length).to.equal(0);
         }
     });
 })();

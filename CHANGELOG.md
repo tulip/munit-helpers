@@ -1,3 +1,10 @@
+# 0.3
+
+* MunitHelpers.Collections.stub now does not copy exiting records by default
+  when stubbing a real Mongo.Collection (as opposed to an existing stub)
+
+* Added MunitHelpers.DeepMatch
+
 # 0.2.1
 
 * MunitHelpers.Methods.apply now works on both client and server

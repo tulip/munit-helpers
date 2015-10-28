@@ -16,7 +16,7 @@ limitations under the License.
 
 Package.describe({
     summary: "Helpers for writing unit tests with Munit",
-    version: "0.2.1",
+    version: "0.3.0",
     name: "tulip:munit-helpers",
     git: "https://github.com/tulip/munit-helpers.git"
 });
@@ -60,6 +60,7 @@ Package.onUse(function (api) {
 
         "common/auth.js",
         "common/collections.js",
+        "common/deep_match.js",
         "common/stub_properties.js",
         "common/stub_date.js"
     ]);
@@ -105,6 +106,7 @@ Package.onTest(function(api) {
     api.addFiles([
         "tests/common/auth_tests.js",
         "tests/common/collections_tests.js",
+        "tests/common/deep_match_tests.js",
         "tests/common/methods_tests.js",
         "tests/common/stub_date_tests.js",
         "tests/common/stub_properties_tests.js"

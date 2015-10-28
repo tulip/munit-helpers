@@ -38,6 +38,10 @@ limitations under the License.
                 throw new Error("Undefined collection passed to MunitHelpers.Collections.stub");
             }
 
+            if(_.isUndefined(dontImportExisting)) {
+                dontImportExisting = !MunitHelpers.Collections.isStubbed(collection);
+            }
+
             // create a minimongo collection to act as the stub
             var stubCollection = new LocalCollection();
             stubCollection.name = collection._name;
