@@ -59,7 +59,7 @@ limitations under the License.
                     sub.stop();
 
                     // clean up the connection
-                    conns.clientConn.restore();
+                    conns.restore();
                 },
 
                 collection: function(name) {
