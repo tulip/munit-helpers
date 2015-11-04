@@ -18,24 +18,26 @@ limitations under the License.
     "use strict";
 
     _.extend(MunitHelpers.Auth, {
-        stubLogin: function(userRecord) {
-            check(userRecord, Match.OneOf(Object, null));
+        stubLogin: function(userRecordOrId) {
+            check(userRecordOrId, Match.OneOf(Object, String, null));
 
-            var id = null;
-            if(userRecord) {
+            var userRecord;
+            var restoreUserStub;
+            if(userRecordOrId) {
                 // if we have a user record (as opposed to null), and it
                 // doesn't have an id, add one.
-                if(!userRecord._id) {
-                    userRecord._id = MunitHelpersInternals.randomId();
+                if(_.isString(userRecordOrId)) {
+                    userRecord = Meteor.users.findOne({_id: userRecordOrId});
+                }
+                else {
+                    userRecord = userRecordOrId;
+                    if(!userRecord._id) {
+                        userRecord._id = MunitHelpersInternals.randomId();
+                    }
+
+                    restoreUserStub = MunitHelpers.Auth.stubUser(userRecord);
                 }
 
-                id = userRecord._id;
-            }
-
-            // stub the user
-            var restoreUserStub;
-            if(userRecord) {
-                restoreUserStub = MunitHelpers.Auth.stubUser(userRecord);
             }
 
             // save old stubs in case we're nested inside another stubLogin
@@ -44,10 +46,10 @@ limitations under the License.
 
             // stub Meteor.user and Meteor.userId
             stubs.create("munitHelpersMeteorUser", Meteor, "user").returns(userRecord);
-            stubs.create("munitHelpersMeteorUserId", Meteor, "userId").returns(id);
+            stubs.create("munitHelpersMeteorUserId", Meteor, "userId").returns(userRecord._id);
 
             // stub Meteor.connection._userId
-            var restoreConnectionUserIdStub = MunitHelpers.StubProperties.stub(Meteor.connection, "_userId", id);
+            var restoreConnectionUserIdStub = MunitHelpers.StubProperties.stub(Meteor.connection, "_userId", userRecord._id);
             Meteor.connection._userIdDeps.changed();
 
             return function() {

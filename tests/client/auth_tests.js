@@ -80,6 +80,27 @@ limitations under the License.
             expect(runTestMethod()).to.equal(userRecord._id);
         },
 
+        testStubingAlreadyCreatedUser: function() {
+            // stub the login with a user that does have an id.
+
+            var userRecord = {
+                foo: "bar"
+            };
+
+            MunitHelpers.Auth.stubUser(userRecord);
+
+            MunitHelpers.Auth.stubLogin(userRecord._id);
+
+            // check that the id wasn't changed and the stub was made
+            expect(MunitHelpers.Collections.isStubbed(Meteor.users)).to.be.true;
+            expect(userRecord._id).to.equal(userRecord._id);
+            expect(Meteor.users.findOne(userRecord._id)).to.deep.equal(userRecord);
+            expect(Meteor.user()).to.deep.equal(userRecord);
+            expect(Meteor.userId()).to.equal(userRecord._id);
+            expect(runTestMethod()).to.equal(userRecord._id);
+        },
+
+
         testStubLoginRestore: function() {
             // stub
             var userRecord = {

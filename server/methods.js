@@ -18,7 +18,7 @@ limitations under the License.
     "use strict";
 
     MunitHelpers.Methods = {
-        apply: function(method, args, user) {
+        apply: function(method, args, userOrId) {
             if(!Meteor.server.method_handlers[method]) {
                 throw new Error("No such method " + method);
             }
@@ -38,8 +38,8 @@ limitations under the License.
 
             // if we're running the method as a user, stub the user login
             var resetStubLogin;
-            if(user) {
-                resetStubLogin = MunitHelpers.Connection.stubLogin(conns, user);
+            if(userOrId) {
+                resetStubLogin = MunitHelpers.Connection.stubLogin(conns, userOrId);
             }
 
             // actually run the method

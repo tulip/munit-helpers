@@ -65,16 +65,21 @@ limitations under the License.
             makeTestConnection(test, successCallback, failureCallback);
         }),
 
-        stubLogin: function(conns, user) {
-            var resetStubUser = MunitHelpers.Auth.stubUser(user);
+        stubLogin: function(conns, userOrId) {
+            var resetStubUser;
+            if(!_.isString(userOrId)) {
+                resetStubUser = MunitHelpers.Auth.stubUser(userOrId);
+            }
 
             // mark the connection we created as being logged in as
             // the stub user, but save the old user so we can restore later
             var origUser = Meteor.server.sessions[conns.serverConn.id].userId;
-            Meteor.server.sessions[conns.serverConn.id].userId = user._id;
+            Meteor.server.sessions[conns.serverConn.id].userId = userOrId._id || userOrId;
 
             return function() {
-                resetStubUser();
+                if(resetStubUser) {
+                    resetStubUser();
+                }
 
                 if(Meteor.isServer && Meteor.server.sessions[conns.serverConn.id]) {
                     Meteor.server.sessions[conns.serverConn.id] = origUser;
