@@ -169,9 +169,9 @@ Auth (Varies)
 
 Stubs `Meteor.users` using `MunitHelpers.Colletions.stub` and inserts the given user record. If the given record does not have an `_id` field, one will be added. Returns a function that removes the given user from the stubbed `Meteor.users` collection, and then un-stubs `Meteor.users` if it was not stubbed before `stubUser` was called.
 
-##### `MunitHelpers.Auth.stubLogin(userRecord:Object or Null) -> Function` (Client Only)
+##### `MunitHelpers.Auth.stubLogin(userRecord:Object or String or Null) -> Function` (Client Only)
 
-Stubs `Meteor.user` and `Meteor.userId` to return the given user (or null). If the given user isn't null and does not have an `_id` field, an `_id` field will be added. Returns a function that can be called to restore the stubs. The stubs can also be restored by calling `MunitHelpers.restoreAll()`.
+Stubs `Meteor.user` and `Meteor.userId` to return the given user (or null). If the given user isn't null and does not have an `_id` field, an `_id` field will be added. If the user record is a string (the ID of a user), it will stub the login without adding the user to the Meteor.users collection. Returns a function that can be called to restore the stubs. The stubs can also be restored by calling `MunitHelpers.restoreAll()`.
 
 
 Templates (Client)
