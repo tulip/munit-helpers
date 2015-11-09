@@ -79,6 +79,26 @@ limitations under the License.
                     }
                 }
             );
-        }
+        },
+
+        testApplyWithExistingUser: function() {
+            var userRecord = {
+                foo: "bar"
+            };
+            MunitHelpers.Auth.stubUser(userRecord);
+
+            expect(MunitHelpers.Methods.apply(
+                "munitHelpersMethodsTestMethod",
+                [{
+                    ping: "testmsg"
+                }],
+                userRecord._id
+            )).to.deepMatch(
+                {
+                    pong: "testmsg",
+                    user: userRecord,
+                }
+            );
+        },
     });
 })();

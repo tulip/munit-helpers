@@ -104,7 +104,7 @@ Restores all collections stubbed by `MunitHelpers.Collections.stub`.
 Methods (Anywhere)
 --------------------
 
-##### `MunitHelpers.Methods.apply(method:String, args:Array, user:Optional Object)`
+##### `MunitHelpers.Methods.apply(method:String, args:Array, user:Optional Object or String)`
 
 Runs the given method with the given arguments. Stubs a log-in of the given user if provided. Returns the return value of the method, or throws an error if the method throws an error.
 
@@ -230,7 +230,7 @@ Creates a connection to this server. Returns an object with three properties:
 
 WARNING: This method does not work with sinon's fake timers. It does work with `MunitHelpers.StubDate.stub`.
 
-##### `MunitHelpers.Connection.stubLogin(conns:Object, user:Object) -> Function`
+##### `MunitHelpers.Connection.stubLogin(conns:Object, userOrId:Object|String) -> Function`
 
 Stubs a log-in of the given user and marks that user as logged in to the given connection (pass the object returned by `MunitHelpers.Connection.create`). Returns a function that restores the stubbing. The stubs can also be restored by calling `MunitHelpers.restoreAll()`.
 

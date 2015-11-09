@@ -18,7 +18,7 @@ limitations under the License.
     "use strict";
 
     MunitHelpers.Methods = {
-        apply: function(method, args, user) {
+        apply: function(method, args, userOrId) {
             if(!Meteor.connection._methodHandlers[method]) {
                 throw new Error("No method stub for " + method);
             }
@@ -35,18 +35,23 @@ limitations under the License.
 
             // if we're running the method as a user, stub the user login
             var resetStubLogin;
-            if(user) {
-                resetStubLogin = MunitHelpers.Auth.stubLogin(user);
+            if(userOrId) {
+                resetStubLogin = MunitHelpers.Auth.stubLogin(userOrId);
             }
 
             // actually run the method
             try {
                 var errToReturn, resultToReturn;
 
+                var userId = null;
+                if(userOrId) {
+                    userId = userOrId._id || userOrId;
+                }
+
                 // construct a DDP invocation
                 var invocation = new DDPCommon.MethodInvocation({
                     isSimulation: true,
-                    userId: user ? user._id : null,
+                    userId: userId,
                     setUserId: function() { /* no-op */ },
                     randomSeed: _.bind(Random.id, Random)
                 });
