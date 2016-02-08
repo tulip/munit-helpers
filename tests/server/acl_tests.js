@@ -20,6 +20,10 @@ limitations under the License.
 
     var expect = chai.expect;
 
+    MunitHelpers.configure({
+        authorizationErrors: [ 403, "AuthorizationError" ]
+    });
+
     Munit.run({
         name: "munit-helpers - Server - ACL",
 
@@ -159,6 +163,68 @@ limitations under the License.
             }, {
                 userFlag: "allow"
             })).to.be.false;
+        },
+
+        testErrors: function() {
+            var TestCollection403 = new Meteor.Collection(null);
+            var TestCollectionAuthorizationError = new Meteor.Collection(null);
+            var TestCollectionOtherMeteorError = new Meteor.Collection(null);
+            var TestCollectionOtherError = new Meteor.Collection(null);
+
+            TestCollection403.allow({
+                insert: function() { throw new Meteor.Error(403, "message"); }
+            });
+
+            TestCollectionAuthorizationError.allow({
+                insert: function() { throw new Meteor.Error("AuthorizationError", "message"); }
+            });
+
+            TestCollectionOtherMeteorError.allow({
+                insert: function() { throw new Meteor.Error("Something Else", "message"); }
+            });
+
+            TestCollectionOtherError.allow({
+                insert: function() { throw new Error("A non-meteor error"); }
+            });
+
+            // test default config
+
+            MunitHelpers.configure();
+
+            expect(MunitHelpers.ACL.insertPermitted(TestCollection403, {}))
+                .to.be.false;
+
+            expect(function() {
+                MunitHelpers.ACL.insertPermitted(TestCollectionAuthorizationError, {});
+            }).to.throw("AuthorizationError");
+
+            expect(function() {
+                MunitHelpers.ACL.insertPermitted(TestCollectionOtherMeteorError, {});
+            }).to.throw("Something Else");
+
+            expect(function() {
+                MunitHelpers.ACL.insertPermitted(TestCollectionOtherError, {});
+            }).to.throw("A non-meteor error");
+
+            // test custom config
+
+            MunitHelpers.configure({
+                authorizationErrors: [ 403, "AuthorizationError" ]
+            });
+
+            expect(MunitHelpers.ACL.insertPermitted(TestCollection403, {}))
+                .to.be.false;
+
+            expect(MunitHelpers.ACL.insertPermitted(TestCollectionAuthorizationError, {}))
+                .to.be.false;
+
+            expect(function() {
+                MunitHelpers.ACL.insertPermitted(TestCollectionOtherMeteorError, {});
+            }).to.throw("Something Else");
+
+            expect(function() {
+                MunitHelpers.ACL.insertPermitted(TestCollectionOtherError, {});
+            }).to.throw("A non-meteor error");
         },
     });
 })();

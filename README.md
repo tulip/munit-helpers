@@ -41,6 +41,20 @@ Munit Helpers additionally provides the excellent [Chai jQuery](https://github.c
 API
 ====================
 
+Configuration (Anywhere)
+--------------------
+
+##### `MunitHelpers.configure(configuration:Object)`
+
+Sets MunitHelpers configuration options. Valid options:
+
+- `authorizationErrors`: Array of errors that should be considered authorization
+  errors when testing ACL. See `MunitHelpers.ACL` for details. Defaults to
+  `[403]`.
+
+Passing no arguments (instead of a configuration object) will reset the
+configuration to the default configuration.
+
 Restore All (Anywhere)
 --------------------
 
@@ -208,6 +222,8 @@ ACL (Server Only)
 --------------------
 
 Utilities for testing whether DB operations would be permitted by the package's allow/deny rules. Each of these methods takes the collection to check, the arguments that would be passed to the call, and an optional user. If the user is provided, the allow/deny rules will be run with that user is logged in. These methods return true if the insert was permitted, false if it was forbidden, and raise an error if an allow or deny rule raises an error.
+
+By default, if the ACL rule raises a `Meteor.Error` with the error `403`, Munit Helpers considers that a forbidden response, and returns `false` instead of re-raising the error. If your code base uses other errors to indicate a forbidden response, you can configure additional errors types to be treated as forbidden errors. For example, calling `MunitHelpers.configure({ authorizationErrors: [ 403, "AuthorizationError" ] })` will cause these ACL checks to return false if an ACL rule does a `throw new Meteor.Error("AuthorizationError", "SomeMessage")`.
 
 Note that the insert/update/remove is not actually performed -- we stub out the method that would actually do that. If you want to have the collection contain documents (which you probably do when testing update/remove rules), you can stub the collection with `MunitHelpers.Collections.stub` before calling these methods.
 

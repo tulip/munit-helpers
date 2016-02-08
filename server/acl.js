@@ -17,6 +17,13 @@ limitations under the License.
 (function () {
     "use strict";
 
+    // given an error, returns whether it's an authorization error.
+    var errorIsAuthorizationError = function(err) {
+        return err &&
+            (err instanceof Meteor.Error) &&
+            _.contains(MunitHelpersInternals.configuration.authorizationErrors, err.error);
+    };
+
     // checks if an insert, update, or remove
     // action is permitted.
     //
@@ -46,7 +53,7 @@ limitations under the License.
             success = true;
         }
         catch(err) {
-            if((err instanceof Meteor.Error) && (err.error === 403) && (err.reason = "Access denied") ){
+            if(errorIsAuthorizationError(err)){
                 success = false;
             }
             else {

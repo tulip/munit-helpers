@@ -25,6 +25,12 @@ MunitHelpersInternals = undefined;
     var RANDOM_ID_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz".split("");
     var RANDOM_ID_LENGTH = 17;
 
+    var defaultConfiguration = function() {
+        return {
+            authorizationErrors: [403],
+        };
+    };
+
     MunitHelpersInternals = {
         onRestoreAll: function(fn) {
             restoreAllFns.push(fn);
@@ -38,7 +44,9 @@ MunitHelpersInternals = undefined;
                 str += RANDOM_ID_CHARS[Math.floor(Math.random() * RANDOM_ID_CHARS.length)];
             }
             return str;
-        }
+        },
+
+        configuration: defaultConfiguration()
     };
 
     MunitHelpers = {
@@ -46,6 +54,20 @@ MunitHelpersInternals = undefined;
             restoreAllFns.forEach(function(fn) {
                 fn();
             });
+        },
+
+        configure: function(configuration) {
+            if(_.isUndefined(configuration)) {
+                // reset configuration
+                MunitHelpersInternals.configuration = defaultConfiguration();
+                return;
+            }
+
+            check(configuration, {
+                authorizationErrors: [Match.OneOf(String, Number)],
+            });
+
+            _.extend(MunitHelpersInternals.configuration, configuration);
         }
     };
 
