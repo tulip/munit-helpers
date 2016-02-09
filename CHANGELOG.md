@@ -1,3 +1,20 @@
+# 0.3.4
+
+* Better support for testing methods that create users
+
+# 0.3.3
+
+* More flexible error handling in MunitHelpers.ACL
+
+# 0.3.2
+
+* Only stub users in stubLogin if a user record is passed, not if a string is
+  passed.
+
+# 0.3.1
+
+* Fix restoring stubbed individual connections
+
 # 0.3
 
 * MunitHelpers.Collections.stub now does not copy exiting records by default

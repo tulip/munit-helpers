@@ -106,6 +106,41 @@ limitations under the License.
             expect(MunitHelpers.Collections.isStubbed(Meteor.users)).to.be.false;
             expect(Meteor.users.findOne(user1._id)).to.be.undefined;
             expect(Meteor.users.findOne(user2._id)).to.be.undefined;
+        },
+
+        clientTestStubUserAlreadyStubbed: function() {
+            MunitHelpers.Collections.stub(Meteor.users);
+
+            var user1 = { _id: "user1" };
+            var user2 = { _id: "user2" };
+            var stubUser = { _id: "stubUser" };
+
+            expect(Meteor.users.find().count()).to.equal(0);
+
+            // pre-existing user
+            Meteor.users.insert(user1);
+            expect(_.pluck(Meteor.users.find().fetch(), "_id")).to.have.members(
+                ["user1"]
+            );
+
+            // stub
+            var restore = MunitHelpers.Auth.stubUser(stubUser);
+            expect(_.pluck(Meteor.users.find().fetch(), "_id")).to.have.members(
+                ["user1", "stubUser"]
+            );
+
+            // insert another user
+            Meteor.users.insert(user2);
+            expect(_.pluck(Meteor.users.find().fetch(), "_id")).to.have.members(
+                ["user1", "user2", "stubUser"]
+            );
+
+            // restoring should clean up just stubUser
+            restore();
+            expect(_.pluck(Meteor.users.find().fetch(), "_id")).to.have.members(
+                ["user1", "user2"]
+            );
+            expect(MunitHelpers.Collections.isStubbed(Meteor.users)).to.be.true;
         }
     });
 })();

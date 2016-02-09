@@ -21,8 +21,11 @@ limitations under the License.
         stubUser: function(userRecord) {
             check(userRecord, Object);
 
-            //  stub Meteor.users
-            var restoreCollectionStub = MunitHelpers.Collections.stub(Meteor.users);
+            //  stub Meteor.users if it's not already stubbed
+            var restoreCollectionStub;
+            if(!MunitHelpers.Collections.isStubbed(Meteor.users)) {
+                restoreCollectionStub = MunitHelpers.Collections.stub(Meteor.users);
+            }
 
             var _id = Meteor.users.insert(userRecord);
 
@@ -34,7 +37,9 @@ limitations under the License.
                 Meteor.users.remove(_id);
 
                 // call the restoration function for the collection
-                restoreCollectionStub();
+                if(restoreCollectionStub) {
+                    restoreCollectionStub();
+                }
             };
         }
     };

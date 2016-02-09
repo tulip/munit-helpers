@@ -28,9 +28,11 @@ limitations under the License.
         suiteSetup: function() {
             if(Meteor.isClient) {
                 delete Meteor.connection._methodHandlers.munitHelpersMethodsTestMethod;
+                delete Meteor.connection._methodHandlers.munitHelpersMethodsTestMethodCreatesUser;
             }
             else {
                 delete Meteor.server.method_handlers.munitHelpersMethodsTestMethod;
+                delete Meteor.server.method_handlers.munitHelpersMethodsTestMethodCreatesUser;
             }
 
             Meteor.methods({
@@ -47,7 +49,15 @@ limitations under the License.
                     }
 
                     return response;
+                },
+
+                munitHelpersMethodsTestMethodCreatesUser: function(expectedCurrentUserId) {
+                    expect(this.userId).to.equal(expectedCurrentUserId);
+                    expect(Meteor.users.findOne(expectedCurrentUserId)).to.be.ok;
+
+                    return Meteor.users.insert({});
                 }
+
             });
         },
 
@@ -100,5 +110,22 @@ limitations under the License.
                 }
             );
         },
+
+        testApplyWithMethodThatCreatesAUser: function() {
+            MunitHelpers.Collections.stub(Meteor.users);
+
+            var createdUserId = MunitHelpers.Methods.apply(
+                "munitHelpersMethodsTestMethodCreatesUser",
+                ["usertestid"],
+                {
+                    _id: "usertestid",
+                }
+            );
+
+            // stubbed user should have been cleaned up, but not the user that was
+            // created
+            expect(Meteor.users.findOne("usertestid")).to.be.undefined;
+            expect(Meteor.users.findOne(createdUserId)).to.not.be.undefined;
+        }
     });
 })();

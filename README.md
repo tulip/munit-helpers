@@ -124,6 +124,8 @@ Runs the given method with the given arguments. Stubs a log-in of the given user
 
 On the client, this uses the client-side stub of the method. It does not actually call to the server. On the server, this uses the server-side version of the method. In both cases, it runs syncronously, returning a value instead of taking a callback.
 
+If a user is passed, this method will stub `Meteor.users` if it's not already stubbed, and un-stub it after the method completes. This means that if you're testing a method that modifies `Meteor.users`, you should stub `Meteor.users` before using `MunitHelpers.Methods.apply` to avoid your method's modifications begin made to the stubbed collection and cleared at the end of the method. If the collection is already stubbed and you pass a user object to `MunitHelpers.Methods.apply`, the user will be inserted at the start of the method and removed at the end, but `Meteor.users` won't be re-stubbed, so your changes will persist.
+
 WARNING: On the server, this internally uses `MunitHelpers.Connection.create`, which means it won't work with sinon's fake timers. It does work with `MunitHelpers.StubDate.stub`.
 
 DeepMatch (Anywhere)
