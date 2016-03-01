@@ -25,7 +25,7 @@ limitations under the License.
 
         tearDown: MunitHelpers.restoreAll,
 
-        clientTestStubUserImplicitId: function() {
+        testStubUserImplicitId: function() {
             var user = {
                 foo: "bar"
             };
@@ -45,7 +45,7 @@ limitations under the License.
             });
         },
 
-        clientTestStubUserExplicitId: function() {
+        testStubUserExplicitId: function() {
             var user = {
                 _id: "abcd",
                 foo: "bar"
@@ -66,7 +66,7 @@ limitations under the License.
             });
         },
 
-        clientTestStubUserRestore: function() {
+        testStubUserRestore: function() {
             var user = {};
 
             var restore = MunitHelpers.Auth.stubUser(user);
@@ -82,7 +82,7 @@ limitations under the License.
             expect(Meteor.users.findOne(user._id)).to.be.undefined;
         },
 
-        clientTestStubUserNested: function() {
+        testStubUserNested: function() {
             var user1 = {};
             var user2 = {};
 
@@ -108,7 +108,7 @@ limitations under the License.
             expect(Meteor.users.findOne(user2._id)).to.be.undefined;
         },
 
-        clientTestStubUserAlreadyStubbed: function() {
+        testStubUserAlreadyStubbed: function() {
             MunitHelpers.Collections.stub(Meteor.users);
 
             var user1 = { _id: "user1" };
@@ -141,6 +141,28 @@ limitations under the License.
                 ["user1", "user2"]
             );
             expect(MunitHelpers.Collections.isStubbed(Meteor.users)).to.be.true;
+        },
+
+        testStubUserAlreadyExists: function() {
+            MunitHelpers.Collections.stub(Meteor.users);
+
+            Meteor.users.insert({_id: "userId", foo: "bar"});
+            expect(Meteor.users.find().fetch()).to.deepMatch([{
+                _id: "userId",
+                foo: "bar",
+            }]);
+
+            var restore = MunitHelpers.Auth.stubUser({_id: "userId", foo: "baz"});
+            expect(Meteor.users.find().fetch()).to.deepMatch([{
+                _id: "userId",
+                foo: "baz",
+            }]);
+
+            restore();
+            expect(Meteor.users.find().fetch()).to.deepMatch([{
+                _id: "userId",
+                foo: "baz",
+            }]);
         }
     });
 })();

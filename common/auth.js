@@ -27,14 +27,33 @@ limitations under the License.
                 restoreCollectionStub = MunitHelpers.Collections.stub(Meteor.users);
             }
 
-            var _id = Meteor.users.insert(userRecord);
+            var insertedId;
+            if (userRecord._id) {
+                var fieldsToSet = EJSON.clone(userRecord);
+                delete fieldsToSet._id;
+
+                var result = Meteor.users.upsert(
+                    { _id: userRecord._id },
+                    { $set: fieldsToSet }
+                );
+
+                insertedId = result.insertedId;
+            }
+            else {
+                insertedId = Meteor.users.insert(userRecord);
+            }
 
             // store the id back in userRecord
-            userRecord._id = _id;
+            if (insertedId) {
+                userRecord._id = insertedId;
+            }
+
 
             return function() {
                 // first, remove the user, in case the stub was a no-op
-                Meteor.users.remove(_id);
+                if (insertedId) {
+                    Meteor.users.remove(insertedId);
+                }
 
                 // call the restoration function for the collection
                 if(restoreCollectionStub) {

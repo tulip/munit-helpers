@@ -31,6 +31,7 @@ Package.onUse(function (api) {
         "check",
         "ddp",
         "ddp-common",
+        "ejson",
         "htmljs",
         "jquery",
         "minimongo",

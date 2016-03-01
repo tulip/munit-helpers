@@ -1,5 +1,9 @@
 # 0.3.4
 
+* `MunitHelpers.Auth.stubUser` now correctly handles users that already exist.
+
+# 0.3.4
+
 * Better support for testing methods that create users
 
 # 0.3.3

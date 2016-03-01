@@ -20,6 +20,8 @@ limitations under the License.
 
     var expect = chai.expect;
 
+    var RealCollectionTest = new Meteor.Collection("RealCollectionTest");
+
     Munit.run({
         name: "munit-helpers - Server - Publications",
 
@@ -27,6 +29,7 @@ limitations under the License.
 
         suiteSetup: function() {
             delete Meteor.server.publish_handlers.munitHelpersTestPublication;
+            delete Meteor.server.publish_handlers.RealCollectionTest;
 
             Meteor.publish("munitHelpersTestPublication", function(arg) {
                 check(arg, Match.Optional({
@@ -44,6 +47,11 @@ limitations under the License.
                 }
 
                 this.ready();
+            });
+
+            RealCollectionTest.remove({});
+            Meteor.publish("RealCollectionTest", function(arg) {
+                return RealCollectionTest.find();
             });
         },
 
@@ -85,6 +93,19 @@ limitations under the License.
                 _id: "pubtestid",
                 some: "thing",
                 pong: undefined
+            });
+        },
+
+        testSubscribeMatchesCollectionName: function() {
+            RealCollectionTest.insert({_id: "a", b: "c"});
+
+            var pub = MunitHelpers.Publications.run(
+                "RealCollectionTest"
+            );
+
+            expect(pub.collection("RealCollectionTest").findOne("a")).to.deepMatch({
+                _id: "a",
+                b: "c",
             });
         }
     });
